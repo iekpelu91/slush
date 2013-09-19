@@ -9,6 +9,11 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+
 
 using namespace std;
 
@@ -32,31 +37,56 @@ main(int argc, char **argv)
   
   char line[MAX_LINE];
 //   char *command[256];
-  int i = 0;
 //   char **argv;
+  int pid_child;
   // Establish signal handler for SIGINT (^C)
   signal(SIGINT,handle_interrupt);
   siginterrupt(SIGINT,1);
 
   do {
+    int i = 0;
+
     cout << "slush% ";
     errno = 0;
     if (cin.getline(line,MAX_LINE)) {
-      cout << "You typed: " << line << endl;
+//       cout << "You typed: " << line << endl;
     } else {
       if (errno == EINTR) {
         cin.clear();
         cout << endl;
       }
     }
-    while (argv[i]!= NULL)
-      {
 	argv[i] = strtok(line," ");
 	i++;
+	if (argv[i] == "("){
+	  pid_t fork();
+	  execvp(line, argv);
+	}
+	pid_t fork();
+	switch (pid_child = fork()){
+	  if (pid_child== 0){
+	    //child
+	    cout<<"Child pid is " <<getpid()<<".\n";
+	    execvp(line, argv);
+	    break;
+	  }
+	  
+	  else if (pid_child== -1){
+	    //fork failed
+	    perror("Fork");
+	    exit(0);
+	  }
+	  else {
+	    default:
+	      //parent
+	      wait(NULL);
+	      cout<<"Parent pid is " <<getpid()<<".\n";
+	      execvp(line, argv);
+	      exit(0);
+	  }
+	}
 	
-	execvp(line, argv);
-      }
-      
+     
   } while (cin);
 
   cout << endl;
