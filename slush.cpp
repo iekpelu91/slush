@@ -45,49 +45,51 @@ main(int argc, char **argv)
 
   do {
     int i = 0;
-
+    
     cout << "slush% ";
     errno = 0;
     if (cin.getline(line,MAX_LINE)) {
-//       cout << "You typed: " << line << endl;
+      //       cout << "You typed: " << line << endl;
     } else {
       if (errno == EINTR) {
         cin.clear();
         cout << endl;
       }
     }
-	argv[i] = strtok(line," ");
-	i++;
-	if (argv[i] == "("){
-	  pid_t fork();
-	  execvp(line, argv);
-	}
-	pid_t fork();
-	switch (pid_child = fork()){
-	  if (pid_child== 0){
-	    //child
-	    cout<<"Child pid is " <<getpid()<<".\n";
-	    execvp(line, argv);
-	    break;
-	  }
-	  
-	  else if (pid_child== -1){
-	    //fork failed
-	    perror("Fork");
-	    exit(0);
-	  }
-	  else {
-	    default:
-	      //parent
-	      wait(NULL);
-	      cout<<"Parent pid is " <<getpid()<<".\n";
-	      execvp(line, argv);
-	      exit(0);
-	  }
-	}
-	
-     
-  } while (cin);
+    argv[0] = strtok(line," ");
+    while(argv[i]!=NULL){    
+      i++;
+      argv[i] = strtok(NULL," ");
+    }
+    //if (argv[i] == "("){
+      //  pid_t fork();
+      //execvp(line, argv);
+  }
+  //pid_t fork();
+  pid_child = fork();
+  if (pid_child== 0){
+    //child
+    cout<<"Child pid is " <<getpid()<<".\n";
+    execvp(argv[0], argv);
+    perror(argv[0]);
+    exit();
+  }
+  
+  else if (pid_child== -1){
+    //fork failed
+    perror("Fork");
+    exit(0);
+  }
+  else {
+    //parent
+    wait(NULL);
+    cout<<"Parent pid is " <<getpid()<<".\n";
+    // execvp(line, argv);
+    //exit(0);
+  }
+}
 
-  cout << endl;
+} while (cin);
+
+cout << endl;
 }
