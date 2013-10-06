@@ -36,13 +36,13 @@ main(int argc, char **argv)
   const int MAX_LINE=256;
   
   char line[MAX_LINE];
-//   char *command[256];
-//   char **argv;
+  //   char *command[256];
+  //   char **argv;
   int pid_child;
   // Establish signal handler for SIGINT (^C)
   signal(SIGINT,handle_interrupt);
   siginterrupt(SIGINT,1);
-
+  
   do {
     int i = 0;
     
@@ -50,7 +50,8 @@ main(int argc, char **argv)
     errno = 0;
     if (cin.getline(line,MAX_LINE)) {
       //       cout << "You typed: " << line << endl;
-    } else {
+    }
+    else {
       if (errno == EINTR) {
         cin.clear();
         cout << endl;
@@ -59,37 +60,37 @@ main(int argc, char **argv)
     argv[0] = strtok(line," ");
     while(argv[i]!=NULL){    
       i++;
-      argv[i] = strtok(NULL," ");
     }
+    argv[i] = strtok(NULL," ");
+      
     //if (argv[i] == "("){
-      //  pid_t fork();
-      //execvp(line, argv);
+    //  pid_t fork();
+    //execvp(line, argv);
   }
+  
   //pid_t fork();
-  pid_child = fork();
+  pit_t pid_child = fork();
   if (pid_child== 0){
-    //child
     cout<<"Child pid is " <<getpid()<<".\n";
     execvp(argv[0], argv);
     perror(argv[0]);
-    exit();
-  }
-  
-  else if (pid_child== -1){
-    //fork failed
-    perror("Fork");
     exit(0);
   }
-  else {
-    //parent
-    wait(NULL);
-    cout<<"Parent pid is " <<getpid()<<".\n";
-    // execvp(line, argv);
-    //exit(0);
-  }
-}
+  
+  else 
+    if (pid_child== -1){
+      perror("Fork");
+      exit(0);
+    }
+    else {
+      wait(NULL);
+      cout<<"Parent pid is " <<getpid()<<".\n";
+    
+    }
+}  
 
-} while (cin);
+}
+while (cin);
 
 cout << endl;
 }
