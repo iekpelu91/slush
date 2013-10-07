@@ -66,31 +66,31 @@ main(int argc, char **argv)
     //if (argv[i] == "("){
     //  pid_t fork();
     //execvp(line, argv);
-  }
+
   
   //pid_t fork();
-  pit_t pid_child = fork();
-  if (pid_child== 0){
-    cout<<"Child pid is " <<getpid()<<".\n";
-    execvp(argv[0], argv);
-    perror(argv[0]);
-    exit(0);
-  }
-  
-  else 
-    if (pid_child== -1){
-      perror("Fork");
+    pid_child = fork();
+    if (pid_child== 0){
+      cout<<"Child pid is " <<getpid()<<".\n";
+      execvp(argv[0], argv);
+      perror(argv[0]);
       exit(0);
-    }
-    else {
-      wait(NULL);
-      cout<<"Parent pid is " <<getpid()<<".\n";
+  }
     
-    }
-}  
+    else 
+      if (pid_child== -1){
+	perror("Fork");
+	exit(0);
+      }
+      else {
+	wait(NULL);
+	cout<<"Parent pid is " <<getpid()<<".\n";
+	
+      }
+  }  
+  
 
-}
-while (cin);
+  while (cin);
 
 cout << endl;
 }
