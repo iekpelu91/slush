@@ -74,7 +74,7 @@ main(int argc, char **argv)
       cout<<"Child pid is " <<getpid()<<".\n";
       execvp(argv[0], argv);
       perror(argv[0]);
-      exit(0);
+      exit(EXIT_SUCCESS);
   }
     
     else 
@@ -83,7 +83,8 @@ main(int argc, char **argv)
 	exit(0);
       }
       else {
-	wait(NULL);
+	waitpid(pid_child, int -1,int 0); 
+	//wait(NULL);
 	cout<<"Parent pid is " <<getpid()<<".\n";
 	
       }
